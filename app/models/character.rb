@@ -4,19 +4,33 @@ class Character < ActiveRecord::Base
 
 	def join_guild
 		puts "Select from List"
-		puts Guild.all
+		Guild.all.each do |guild|
+			puts "#{guild.id} - #{guild.name}"
+		end
 		input = STDIN.gets.strip
 		if input.to_i == 0
 			found = Guild.all.find {|guild| guild.name == input}
 			if found
 				self.guild_id = found.id
 				self.save
+				puts "#{self.name} updated guild affiliation."
+				self
 			else
 				create_guild(input)
+				puts "#{self.name} created the #{input} guild & updated affiliation."
+				self
 			end
 		elsif Integer(input)
-			self.guild_id = input.to_i
-			self.save
+			found = Guild.all.find_by_id(input)
+			if found
+				self.guild_id = input.to_i
+				self.save
+				puts "#{self.name} updated guild affiliation."
+				self
+			else
+				puts "That guild ID Number doesn't exist! Choose another."
+				join_guild
+			end
 		end
 	end
 
