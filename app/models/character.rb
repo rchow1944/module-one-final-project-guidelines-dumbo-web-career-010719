@@ -30,5 +30,4 @@ class Character < ActiveRecord::Base
 			puts "That guild name already exists! Choose another."
 		end
 	end
-
 end
