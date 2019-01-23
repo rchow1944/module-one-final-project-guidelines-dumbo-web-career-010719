@@ -4,4 +4,4 @@ require_relative '../config/environment'
 
 welcome
 user = get_user_name
-display_user_characters(user)
+run(user)
