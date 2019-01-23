@@ -93,8 +93,9 @@ def select_character_action(prompt, character)
     menu.enum '.'
 
     menu.choice 'Join Guild', 1
-    menu.choice 'Leave Guild', 2
-    menu.choice 'Delete Character', 3
+    menu.choice 'View Guild', 2
+    menu.choice 'Leave Guild', 3
+    menu.choice 'Delete Character', 4
   end
 end
 
