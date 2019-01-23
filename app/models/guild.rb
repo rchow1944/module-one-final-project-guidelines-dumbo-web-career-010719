@@ -13,6 +13,7 @@ class Guild < ActiveRecord::Base
 			character.save
 		end
 		# super
+    self.destroy
 		"#{self.name} guild has been DESTROYED!"
 	end
 
