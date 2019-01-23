@@ -38,8 +38,6 @@ class Character < ActiveRecord::Base
 			if found && self.guild_id != input.to_i
 				self.guild_id = input.to_i
 				self.save
-				p "New guild: #{self.guild.name}"
-
 				if last_guild.nil?
 					puts "#{self.name} updated guild affiliation to #{self.guild.name}."
 				else
