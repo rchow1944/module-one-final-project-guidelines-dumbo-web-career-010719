@@ -2,6 +2,11 @@ class Character < ActiveRecord::Base
 	belongs_to :guild
 	belongs_to :user
 
+	def name=(value)
+	    super(value)
+	    self.save
+	end
+
 	def join_guild
 		puts "Select from list or create your own."
 		Guild.all.each do |guild|
