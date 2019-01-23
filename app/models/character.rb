@@ -7,6 +7,12 @@ class Character < ActiveRecord::Base
 	    self.save
 	end
 
+	def destroy
+		puts "#{self.name} left the game."
+		super
+		Guild.check_member_count
+	end
+
 	def update_and_notify(old_value, new_value)
 		self.guild_id = new_value.id
 		self.save
@@ -73,13 +79,4 @@ class Character < ActiveRecord::Base
 		Guild.list_member_count
 	end
 
-  	#Displays character info
-  	def display_info
-	    # selected_char = user.characters[selection-1]
-	    puts "Name: #{self.name}"
-	    puts "Guild: #{self.guild.name}"
-	    puts "Health: #{self.hp}"
-	    puts "Attack: #{self.atk}"
-	    puts "Defense: #{self.def}"
-  	end
 end
