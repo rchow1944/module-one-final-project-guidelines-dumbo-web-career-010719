@@ -8,11 +8,11 @@ class User < ActiveRecord::Base
 		champ
 	end
 
-  #Displays characters for user
-  def display_user_characters
-    self.characters.each_with_index { |character, i|
-      puts "#{i+1}. #{character.name}"
-    }
-  end
+  	#Displays characters for user
+  	def display_user_characters
+	    self.characters.each_with_index { |character, i|
+	      puts "#{i+1}. #{character.name}"
+	    }
+  	end
 
 end
