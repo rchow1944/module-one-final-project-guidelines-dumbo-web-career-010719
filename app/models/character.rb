@@ -7,29 +7,51 @@ class Character < ActiveRecord::Base
 		Guild.all.each do |guild|
 			puts "#{guild.id} - #{guild.name}"
 		end
-		last_guild = self.guild
+		if self.guild
+			last_guild = self.guild
+		end
+		p "Current guild: #{last_guild.name}"
+
 		input = STDIN.gets.strip
 		if input.count("a-zA-Z") > 0	#check if input is a string (includes letters)
 			found = Guild.all.find {|guild| guild.name == input}
-			if found
+			if found && self.guild_id != found.id
 				self.guild_id = found.id
 				self.save
-				"#{self.name} updated guild affiliation from #{last_guild.name} to #{self.guild.name}."
-			else
+				if last_guild.nil?
+					puts "#{self.name} updated guild affiliation to #{self.guild.name}."
+				else
+					puts "#{self.name} updated guild affiliation from #{last_guild.name} to #{self.guild.name}."
+				end
+			elsif !found
 				create_guild(input)
-				"#{self.name} created the #{input} guild & updated affiliation."
+			else
+				puts "You are already a member of this guild."
 			end
 		elsif Integer(input)
 			found = Guild.all.find_by_id(input)
-			if found
+			if found && self.guild_id != input.to_i
 				self.guild_id = input.to_i
 				self.save
-				"#{self.name} updated guild affiliation from #{last_guild.name} to #{self.guild.name}."
-			else
+				p "New guild: #{self.guild.name}"
+
+				if last_guild.nil?
+					puts "#{self.name} updated guild affiliation to #{self.guild.name}."
+				else
+					puts "#{self.name} updated guild affiliation from #{last_guild.name} to #{self.guild.name}."
+				end
+			elsif !found
 				puts "That guild ID Number doesn't exist! Choose another."
 				join_guild
+			else
+				puts "You are already a member of this guild."
 			end
 		end
+		Guild.check_member_count
+		Guild.all.each do |guild|
+			print "#{guild.name} has #{guild.members_count} member(s). "
+		end
+		return "Updated Guilds list and members count."
 	end
 
 	def create_guild(name)
@@ -38,9 +60,12 @@ class Character < ActiveRecord::Base
 			new_guild = Guild.create(name: name)
 			self.guild_id = new_guild.id
 			self.save
+			puts "#{self.name} created the #{name} guild & updated affiliation."
 		else
-			"That guild name already exists! Choose another."
+			puts "That guild name already exists! Choose another."
 		end
+		Guild.check_member_count
+		"Guilds list updated."
 	end
 
   	#Displays character info
