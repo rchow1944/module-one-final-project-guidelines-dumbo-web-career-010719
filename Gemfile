@@ -9,3 +9,4 @@ gem "pry"
 gem "require_all"
 gem 'tty-prompt'
 gem 'terminal-table'
+gem 'rainbow'

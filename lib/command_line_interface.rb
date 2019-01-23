@@ -38,10 +38,20 @@ def display_character_info(character)
   puts table
 end
 
+#Selects what to do with character
+def select_character_action(prompt, character)
+  prompt.select("What do you want to do?") do |menu|
+    menu.enum '.'
+
+    menu.choice 'Join Guild', 1
+    menu.choice 'Delete Character', 2
+  end
+end
+
 #Runs the program
 def run(prompt, user)
   found_user = get_user_from_db(user)
   selected_char = select_user_character(prompt, found_user)
   display_character_info(selected_char)
-
+  selected_action = select_character_action(prompt, selected_char)
 end
