@@ -41,4 +41,15 @@ class Guild < ActiveRecord::Base
 		"Updated Guilds list and members count."
 	end
 
+  #Displays Guild Info
+  def display_guild
+    table = Terminal::Table.new :title => Rainbow(self.name).color("#1464dc").bright do |t|
+      t.add_row [Rainbow("Members").crimson, self.members_count]
+      # t << :separator
+      # t.add_row [Rainbow("Attack").color("#3cdc14"), self.atk]
+      # t << :separator
+      # t.add_row [Rainbow("Defense").orange, self.def]
+    end
+    puts table
+  end
 end

@@ -9,8 +9,8 @@ class Character < ActiveRecord::Base
 
 	def remove_character
 		puts "#{self.name} left the game."
-    self.user.characters.delete(self)
-		self.delete
+    self.user.characters.destroy(self)
+		# self.delete
     Guild.check_member_count
 	end
 

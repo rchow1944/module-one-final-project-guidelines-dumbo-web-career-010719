@@ -111,6 +111,14 @@ def select_character_action(prompt, character)
 
  menu = [
    {"Join Guild" => -> do character.join_guild end},
+   {"View Guild" => -> do
+       if character.guild
+         character.guild.display_guild
+       else
+         puts "#{character.name} is not in a guild!"
+       end
+       select_character_action(prompt, character)
+     end},
    {"Leave Guild" => -> do character.leave_guild end},
    {"Delete Character" => -> do character.remove_character end},
    {"Go Back" => -> do return end},
