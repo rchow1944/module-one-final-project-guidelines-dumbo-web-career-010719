@@ -10,4 +10,13 @@ class User < ActiveRecord::Base
        end
 		champ
 	end
+
+	def destroy
+		self.characters.each do |character|
+			puts "#{character.name} left the game."
+			character.destroy
+		end
+		super
+		"#{self.name} removed from Users registry!"
+	end
 end

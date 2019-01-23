@@ -7,6 +7,12 @@ class Character < ActiveRecord::Base
 	    self.save
 	end
 
+	def destroy
+		puts "#{self.name} left the game."
+		super
+		Guild.check_member_count
+	end
+
 	def update_and_notify(old_value, new_value)
 		self.guild_id = new_value.id
 		self.save
