@@ -7,3 +7,5 @@ gem "rspec"
 gem "rake"
 gem "pry"
 gem "require_all"
+gem 'tty-prompt'
+gem 'terminal-table'

@@ -31,13 +31,13 @@ class Character < ActiveRecord::Base
 		end
 	end
 
-  #Displays character info
-  def display_info
-    # selected_char = user.characters[selection-1]
-    puts "Name: #{self.name}"
-    puts "Guild: #{self.guild.name}"
-    puts "Health: #{self.hp}"
-    puts "Attack: #{self.atk}"
-    puts "Defense: #{self.def}"
-  end
+  # #Displays character info
+  # def display_info
+  #   # selected_char = user.characters[selection-1]
+  #   puts "Name: #{self.name}"
+  #   puts "Guild: #{self.guild.name}"
+  #   puts "Health: #{self.hp}"
+  #   puts "Attack: #{self.atk}"
+  #   puts "Defense: #{self.def}"
+  # end
 end
