@@ -7,6 +7,16 @@ class Character < ActiveRecord::Base
 	    self.save
 	end
 
+	def update_and_notify(old_value, new_value)
+		self.guild_id = new_value.id
+		self.save
+		if old_value.nil?
+			puts "#{self.name} joined the #{self.guild.name} guild."
+		else
+			puts "#{self.name} updated guild affiliation from #{old_value.name} to #{self.guild.name}."
+		end
+	end
+
 	def join_guild
 		puts "Select from list or create your own."
 		Guild.all.each do |guild|
@@ -14,38 +24,25 @@ class Character < ActiveRecord::Base
 		end
 		if self.guild
 			last_guild = self.guild
+			puts "Current guild: #{last_guild.name}"
 		end
-		p "Current guild: #{last_guild.name}"
-
 		input = STDIN.gets.strip
 		if input.count("a-zA-Z") > 0	#check if input is a string (includes letters)
 			found = Guild.all.find {|guild| guild.name == input}
-			if found && self.guild_id != found.id
-				self.guild_id = found.id
-				self.save
-				if last_guild.nil?
-					puts "#{self.name} updated guild affiliation to #{self.guild.name}."
-				else
-					puts "#{self.name} updated guild affiliation from #{last_guild.name} to #{self.guild.name}."
-				end
+			if found && self.guild_id != found.id		
+				update_and_notify(last_guild, found)
 			elsif !found
-				create_guild(input)
+				return create_guild(input)
 			else
 				puts "You are already a member of this guild."
 			end
 		elsif Integer(input)
 			found = Guild.all.find_by_id(input)
-			if found && self.guild_id != input.to_i
-				self.guild_id = input.to_i
-				self.save
-				if last_guild.nil?
-					puts "#{self.name} updated guild affiliation to #{self.guild.name}."
-				else
-					puts "#{self.name} updated guild affiliation from #{last_guild.name} to #{self.guild.name}."
-				end
+			if found && self.guild_id != found.id
+				update_and_notify(last_guild, found)
 			elsif !found
 				puts "That guild ID Number doesn't exist! Choose another."
-				join_guild
+				return join_guild
 			else
 				puts "You are already a member of this guild."
 			end
@@ -54,7 +51,7 @@ class Character < ActiveRecord::Base
 		Guild.all.each do |guild|
 			print "#{guild.name} has #{guild.members_count} member(s). "
 		end
-		return "Updated Guilds list and members count."
+		"Updated Guilds list and members count."
 	end
 
 	def create_guild(name)
