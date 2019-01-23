@@ -98,11 +98,6 @@ def select_character_action(prompt, character)
   end
 end
 
-#Executes chracter action
-def do_character_action(selection)
-
-end
-
 #Runs the program
 def run(user)
   prompt = TTY::Prompt.new
