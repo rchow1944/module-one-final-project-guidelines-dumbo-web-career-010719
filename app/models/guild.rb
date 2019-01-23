@@ -6,13 +6,13 @@ class Guild < ActiveRecord::Base
 		self.characters.first
 	end
 
-	def destroy
+	def remove_guild
 		self.characters.each do |character|
 			puts "#{character.name} ejected from #{self.name}."
 			character.guild_id = nil
 			character.save
 		end
-		super
+		# super
 		"#{self.name} guild has been DESTROYED!"
 	end
 
@@ -28,7 +28,7 @@ class Guild < ActiveRecord::Base
 		Guild.all.each do |guild|
 			if guild.members_count == 0
 				placeholder = guild.name
-				guild.destroy
+				guild.remove_guild
 				puts "#{placeholder} deleted from guild registry."
 			end
 		end
