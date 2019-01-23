@@ -112,9 +112,11 @@ def select_character_action(prompt, character)
  menu = [
    {"Join Guild" => -> do character.join_guild end},
    {"Leave Guild" => -> do character.leave_guild end},
-   {"Delete Character" => -> do character.remove_character end}
+   {"Delete Character" => -> do character.remove_character end},
+   {"Go Back" => -> do return end},
+   {"Exit" => -> do exit end}
  ]
- response = prompt.select(Rainbow("What does #{character.name} want to do?"), menu)
+ response = prompt.select(Rainbow("What does #{character.name} want to do?").teal, menu)
 end
 
 #Runs the program
