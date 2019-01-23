@@ -6,6 +6,16 @@ class Guild < ActiveRecord::Base
 		self.characters.first
 	end
 
+	def destroy
+		self.characters.each do |character|
+			puts "#{character.name} ejected from #{self.name}."
+			character.guild_id = nil
+			character.save
+		end
+		super
+		"#{self.name} guild has been DESTROYED!"
+	end
+
 	def members_count
 		self.characters.count
 	end
@@ -23,4 +33,12 @@ class Guild < ActiveRecord::Base
 			end
 		end
 	end
+
+	def self.list_member_count
+		Guild.all.each do |guild|
+			print "#{guild.name} has #{guild.members_count} member(s). "
+		end
+		"Updated Guilds list and members count."
+	end
+
 end

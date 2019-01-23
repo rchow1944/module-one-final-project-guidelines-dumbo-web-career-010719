@@ -48,10 +48,7 @@ class Character < ActiveRecord::Base
 			end
 		end
 		Guild.check_member_count
-		Guild.all.each do |guild|
-			print "#{guild.name} has #{guild.members_count} member(s). "
-		end
-		"Updated Guilds list and members count."
+		Guild.list_member_count
 	end
 
 	def create_guild(name)
@@ -66,6 +63,14 @@ class Character < ActiveRecord::Base
 		end
 		Guild.check_member_count
 		"Guilds list updated."
+	end
+
+	def leave_guild
+		puts "#{self.name} left #{self.guild.name}."
+		self.guild_id = nil
+		self.save
+		Guild.check_member_count
+		Guild.list_member_count
 	end
 
   	#Displays character info
