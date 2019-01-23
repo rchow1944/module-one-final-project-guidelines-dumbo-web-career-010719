@@ -35,7 +35,7 @@ class Character < ActiveRecord::Base
 		input = STDIN.gets.strip
 		if input.count("a-zA-Z") > 0	#check if input is a string (includes letters)
 			found = Guild.all.find {|guild| guild.name == input}
-			if found && self.guild_id != found.id		
+			if found && self.guild_id != found.id
 				update_and_notify(last_guild, found)
 			elsif !found
 				return create_guild(input)
@@ -78,5 +78,4 @@ class Character < ActiveRecord::Base
 		Guild.check_member_count
 		Guild.list_member_count
 	end
-
 end

@@ -3,17 +3,13 @@ class User < ActiveRecord::Base
 	has_many :guilds, through: :characters
 
 	def create_champ(name)
-		champ = Character.new(name: name, hp: rand(20..100), atk: rand(1..10), def: rand(1..10), user_id: self.id)
-		champ.save
+		champ = Character.find_or_create_by(name: name, user_id: self.id) do |champ|
+       champ.hp = rand(20..100)
+       champ.atk = rand(1..10)
+       champ.def = rand(1..10)
+       end
 		champ
 	end
-
-  	#Displays characters for user
-  	def display_user_characters
-	    self.characters.each_with_index { |character, i|
-	      puts "#{i+1}. #{character.name}"
-	    }
-  	end
 
 	def destroy
 		self.characters.each do |character|
@@ -23,5 +19,4 @@ class User < ActiveRecord::Base
 		super
 		"#{self.name} removed from Users registry!"
 	end
-
 end
