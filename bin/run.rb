@@ -4,5 +4,6 @@ require_relative '../config/environment'
 
 welcome
 prompt = TTY::Prompt.new
-user = get_user_name(prompt)
-run(prompt, user)
+user_name = get_user_name(prompt)
+user = get_user_from_db(user_name)
+run(user)

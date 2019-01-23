@@ -21,16 +21,27 @@ def get_user_name(prompt)
 end
 
 #Returns user instance from db or creates one if it doesn't exist
-def get_user_from_db(prompt, user)
+def get_user_from_db(user)
   user_from_db = User.find_or_create_by(name: user)
-  if user_from_db.characters.count <= 0
-    create_chracter_prompt(prompt, user_from_db)
-  end
+  # if user_from_db.characters.count <= 0
+  #   create_character_prompt(prompt, user_from_db)
+  # end
   user_from_db
 end
 
+#Gets user choice from menu
+def get_user_action(prompt, user)
+  prompt.say("Hi, #{user.name}!")
+  choices = [
+    {"Create a Character" => -> do create_character_prompt(prompt, user) end},
+    {"Select a Character" => -> do select_user_character(prompt, user) end},
+    {"Exit" => -> do exit end}
+  ]
+  prompt.select("What do you want to do?", choices)
+end
+
 #Create character
-def create_chracter_prompt(prompt, user)
+def create_character_prompt(prompt, user)
   char_name = prompt.ask(Rainbow("What is your character's name?").teal) do |q|
     q.required true
     q.messages[:required?] = Rainbow("Please enter a name").red
@@ -49,6 +60,20 @@ def select_user_character(prompt, user)
   prompt.select(Rainbow("Select a character:").teal, choices, cycle: true)
 end
 
+#Executes user choice
+def do_user_action(prompt, user, choice)
+  case choice
+  when 1
+    create_character_prompt(prompt, user)
+    prompt.say(Rainbow("Character Created!").green.bright)
+    select_user_character(prompt, user)
+  when 2
+    select_user_character(prompt, user)
+  else
+    puts "Invalid option"
+  end
+end
+
 #Displays character information
 def display_character_info(character)
   table = Terminal::Table.new :title => Rainbow(character.name).color("#1464dc").bright do |t|
@@ -63,7 +88,7 @@ end
 
 #Selects what to do with character
 def select_character_action(prompt, character)
-  prompt.select(Rainbow("What do you want to do?").teal) do |menu|
+  prompt.select(Rainbow("What does #{character.name} want to do?").teal) do |menu|
     menu.enum '.'
 
     menu.choice 'Join Guild', 1
@@ -73,14 +98,19 @@ def select_character_action(prompt, character)
 end
 
 #Executes chracter action
-def run_character_action(selection)
+def do_character_action(selection)
 
 end
 
 #Runs the program
-def run(prompt, user)
-  found_user = get_user_from_db(prompt, user)
-  selected_char = select_user_character(prompt, found_user)
-  display_character_info(selected_char)
-  selected_action = select_character_action(prompt, selected_char)
+def run(user)
+  prompt = TTY::Prompt.new
+  while true
+    # found_user = get_user_from_db(prompt, user)
+    selected_char = get_user_action(prompt, user)
+    # binding.pry
+    # selected_char = do_user_action(prompt, found_user, user_action)
+    display_character_info(selected_char)
+    selected_action = select_character_action(prompt, selected_char)
+  end
 end
