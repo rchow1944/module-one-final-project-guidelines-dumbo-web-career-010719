@@ -7,10 +7,11 @@ class Character < ActiveRecord::Base
 	    self.save
 	end
 
-	def destroy
+	def remove_character
 		puts "#{self.name} left the game."
-		super
-		Guild.check_member_count
+    self.user.characters.delete(self)
+		self.delete
+    Guild.check_member_count
 	end
 
 	def update_and_notify(old_value, new_value)
@@ -72,7 +73,12 @@ class Character < ActiveRecord::Base
 	end
 
 	def leave_guild
-		puts "#{self.name} left #{self.guild.name}."
+    # binding.pry
+    if self.guild
+		    puts "#{self.name} left #{self.guild.name}."
+    else
+        return puts "#{self.name} is unaffiliated."
+    end
 		self.guild_id = nil
 		self.save
 		Guild.check_member_count
