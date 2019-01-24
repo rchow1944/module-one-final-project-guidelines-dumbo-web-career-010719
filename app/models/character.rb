@@ -2,15 +2,16 @@ class Character < ActiveRecord::Base
 	belongs_to :guild
 	belongs_to :user
 
-	def name=(value)
-	    super(value)
-	    self.save
-	end
+	# def name=(value)
+	#     super(value)
+	#     self.save
+	# end
 
-	def destroy
+	def remove_character
 		puts "#{self.name} left the game."
-		super
-		Guild.check_member_count
+    	self.user.characters.destroy(self)
+		# self.destroy
+    	Guild.check_member_count
 	end
 
 	def update_and_notify(old_value, new_value)
@@ -34,7 +35,7 @@ class Character < ActiveRecord::Base
 		end
 		input = STDIN.gets.strip
 		if input.count("a-zA-Z") > 0	#check if input is a string (includes letters)
-			found = Guild.all.find {|guild| guild.name == input}
+			found = Guild.all.find {|guild| guild.name.downcase == input.downcase}
 			if found && self.guild_id != found.id
 				update_and_notify(last_guild, found)
 			elsif !found
@@ -72,7 +73,12 @@ class Character < ActiveRecord::Base
 	end
 
 	def leave_guild
-		puts "#{self.name} left #{self.guild.name}."
+    # binding.pry
+    if self.guild
+		    puts "#{self.name} left #{self.guild.name}."
+    else
+        return puts "#{self.name} is unaffiliated."
+    end
 		self.guild_id = nil
 		self.save
 		Guild.check_member_count

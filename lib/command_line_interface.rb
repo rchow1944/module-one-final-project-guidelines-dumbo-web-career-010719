@@ -88,21 +88,50 @@ def display_character_info(character)
 end
 
 #Selects what to do with character
-def select_character_action(prompt, character)
-  prompt.select(Rainbow("What does #{character.name} want to do?").teal) do |menu|
-    menu.enum '.'
+# def select_character_action(prompt, character)
+#   prompt.select(Rainbow("What does #{character.name} want to do?").teal) do |menu|
+#     menu.enum '.'
+#
+#     menu.choice 'Join Guild', 1
+#     menu.choice 'View Guild', 2
+#     menu.choice 'Leave Guild', 3
+#     menu.choice 'Delete Character', 4
+#   end
+# end
 
-    menu.choice 'Join Guild', 1
-    menu.choice 'View Guild', 2
-    menu.choice 'Leave Guild', 3
-    menu.choice 'Delete Character', 4
-  end
+#Selects what to do with character
+def select_character_action(prompt, character)
+ # prompt.select(Rainbow(“What do you want to do?“).teal) do |menu|
+ #   menu.enum ‘.’
+
+ #   menu.choice ‘Join Guild’, 1
+ #   menu.choice ‘Leave Guild’, 2
+ #   menu.choice ‘Delete Character’, 3
+ # end
+
+ menu = [
+   {"Join Guild" => -> do character.join_guild end},
+   {"View Guild" => -> do
+       if character.guild
+         character.guild.display_guild
+       else
+         puts "#{character.name} is not in a guild!"
+       end
+       select_character_action(prompt, character)
+     end},
+   {"Leave Guild" => -> do character.leave_guild end},
+   {"Delete Character" => -> do character.remove_character end},
+   {"Go Back" => -> do return end},
+   {"Exit" => -> do exit end}
+ ]
+ response = prompt.select(Rainbow("What does #{character.name} want to do?").teal, menu)
 end
 
 #Runs the program
 def run(user)
   prompt = TTY::Prompt.new
   while true
+    user = User.find(user.id)
     selected_char = get_user_action(prompt, user)
     display_character_info(selected_char)
     select_character_action(prompt, selected_char)
