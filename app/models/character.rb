@@ -8,7 +8,7 @@ class Character < ActiveRecord::Base
 	end
 
 	def remove_character
-		puts "#{self.name} left the game."
+		puts Rainbow("#{self.name} left the game.").green
     # self.user.characters.delete(self)
 		self.destroy
     Guild.check_member_count
@@ -18,20 +18,20 @@ class Character < ActiveRecord::Base
 		self.guild_id = new_value.id
 		self.save
 		if old_value.nil?
-			puts "#{self.name} joined the #{self.guild.name} guild."
+			puts Rainbow("#{self.name} joined the #{self.guild.name} guild.").green
 		else
-			puts "#{self.name} updated guild affiliation from #{old_value.name} to #{self.guild.name}."
+			puts Rainbow("#{self.name} updated guild affiliation from #{old_value.name} to #{self.guild.name}.").green
 		end
 	end
 
 	def join_guild
-		puts "Select from list or create your own."
+		puts Rainbow("Select from list or create your own.").teal
 		Guild.all.each do |guild|
-			puts "#{guild.id} - #{guild.name}"
+			puts Rainbow("#{guild.id} - #{guild.name}").gold
 		end
 		if self.guild
 			last_guild = self.guild
-			puts "Current guild: #{last_guild.name}"
+			puts Rainbow("Current guild: #{last_guild.name}").green
 		end
 		input = STDIN.gets.strip
 		if input.count("a-zA-Z") > 0	#check if input is a string (includes letters)
@@ -41,17 +41,17 @@ class Character < ActiveRecord::Base
 			elsif !found
 				return create_guild(input)
 			else
-				puts "You are already a member of this guild."
+				puts Rainbow("You are already a member of this guild.").red
 			end
 		elsif Integer(input)
 			found = Guild.all.find_by_id(input)
 			if found && self.guild_id != found.id
 				update_and_notify(last_guild, found)
 			elsif !found
-				puts "That guild ID Number doesn't exist! Choose another."
+				puts Rainbow("That guild ID Number doesn't exist! Choose another.").red
 				return join_guild
 			else
-				puts "You are already a member of this guild."
+				puts Rainbow("You are already a member of this guild.").red
 			end
 		end
 		Guild.check_member_count
@@ -64,20 +64,20 @@ class Character < ActiveRecord::Base
 			new_guild = Guild.create(name: name)
 			self.guild_id = new_guild.id
 			self.save
-			puts "#{self.name} created the #{name} guild & updated affiliation."
+			puts Rainbow("#{self.name} created the #{name} guild & updated affiliation.").green
 		else
-			puts "That guild name already exists! Choose another."
+			puts Rainbow("That guild name already exists! Choose another.").red
 		end
 		Guild.check_member_count
-		"Guilds list updated."
+		Rainbow("Guilds list updated.").green
 	end
 
 	def leave_guild
     # binding.pry
     if self.guild
-		    puts "#{self.name} left #{self.guild.name}."
+		    puts Rainbow("#{self.name} left #{self.guild.name}.").green
     else
-        return puts "#{self.name} is unaffiliated."
+        return puts Rainbow("#{self.name} is unaffiliated.").red
     end
 		self.guild_id = nil
 		self.save

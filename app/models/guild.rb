@@ -8,13 +8,13 @@ class Guild < ActiveRecord::Base
 
 	def remove_guild
 		self.characters.each do |character|
-			puts "#{character.name} ejected from #{self.name}."
+			puts Rainbow("#{character.name} ejected from #{self.name}.").green
 			character.guild_id = nil
 			character.save
 		end
 		# super
     self.destroy
-		"#{self.name} guild has been DESTROYED!"
+		Rainbow("#{self.name} guild has been DESTROYED!").red
 	end
 
 	def members_count
@@ -30,16 +30,16 @@ class Guild < ActiveRecord::Base
 			if guild.members_count == 0
 				placeholder = guild.name
 				guild.remove_guild
-				puts "#{placeholder} deleted from guild registry."
+				puts Rainbow("#{placeholder} deleted from guild registry.").red
 			end
 		end
 	end
 
 	def self.list_member_count
 		Guild.all.each do |guild|
-			print "#{guild.name} has #{guild.members_count} member(s). "
+			puts Rainbow("#{guild.name} has #{guild.members_count} member(s). ").gold
 		end
-		"Updated Guilds list and members count."
+		Rainbow("Updated Guilds list and members count.").green
 	end
 
   #Displays Guild Info

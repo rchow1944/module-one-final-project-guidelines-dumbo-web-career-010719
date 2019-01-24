@@ -7,9 +7,9 @@ puts "   `.( OO ),' _(  OO)                                ( '.( OO )\_   _(  OO
 puts ",--./  .--.  (,------.,--.       .-----.  .-'),-----. ,--.   ,--.)(,------."
 puts "|      |  |   |  .---'|  |.-')  '  .--./ ( OO'  .-.  '|   `.'   |  |  .---'"
 puts "|  |   |  |,  |  |    |  | OO ) |  |('-. /   |  | |  ||         |  |  |    "
-puts "|  |.'.|  |_)(|  '--. |  |`-' |/_) |OO  )\\_) |  | |  ||  |'.'|  | (|  '--. "
-puts Rainbow("|         |   |  .--'").color(w_color) + "(" + Rainbow("|  '---." + "'|" + "|  |`-'|   \\ |  | |  ||  |   |  |  |  .--' ").color(w_color)
-puts Rainbow("|   ,'.   |   |  `---.|      |").color(w_color) + "(_" + Rainbow("'  '--'\\    `'  '-'  '|  |   |  |  |  `---.").color(w_color)
+puts Rainbow("|  |.'.|  |").color(w_color) + "_)(|  '--. |  |`-' |/_) |OO  )\\_) |  | |  ||  |'.'|  | (|  '--. "
+puts Rainbow("|         |   |  .--'").color(w_color) + "(" + Rainbow("|  '---.").color(w_color) + "'|" + Rainbow("|  |").color(w_color) + "`-'|   \\ " + Rainbow("|  | |  ||  |   |  |  |  .--' ").color(w_color)
+puts Rainbow("|   ,'.   |   |  `---.|      |").color(w_color) + "(_" + Rainbow("'  '--'\\    ").color(w_color) + "`" + Rainbow("'  '-'  '|  |   |  |  |  `---.").color(w_color)
 puts Rainbow("'--'   '--'   `------'`------'   `-----'      `-----' `--'   `--'  `------'").color(w_color)
 
 end
@@ -115,7 +115,7 @@ def select_character_action(prompt, character)
        if character.guild
          character.guild.display_guild
        else
-         puts "#{character.name} is not in a guild!"
+         puts Rainbow("#{character.name} is not in a guild!").red
        end
        select_character_action(prompt, character)
      end},
