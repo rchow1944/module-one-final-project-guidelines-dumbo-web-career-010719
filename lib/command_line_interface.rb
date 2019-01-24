@@ -27,9 +27,6 @@ end
 #Returns user instance from db or creates one if it doesn't exist
 def get_user_from_db(user)
   User.find_or_create_by(name: user)
-  # if user_from_db.characters.count <= 0
-  #   create_character_prompt(prompt, user_from_db)
-  # end
 end
 
 #Gets user choice from menu
@@ -79,20 +76,6 @@ def select_opponent(prompt, character)
   prompt.select(Rainbow("Select an opponent:").teal, choices, cycle: true)
 end
 
-#Executes user choice
-# def do_user_action(prompt, user, choice)
-#   case choice
-#   when 1
-#     create_character_prompt(prompt, user)
-#     prompt.say(Rainbow("Character Created!").green.bright)
-#     select_user_character(prompt, user)
-#   when 2
-#     select_user_character(prompt, user)
-#   else
-#     puts "Invalid option"
-#   end
-# end
-
 #Displays character information
 def display_character_info(character)
   table = Terminal::Table.new :title => Rainbow(character.name).color("#1464dc").bright do |t|
@@ -104,18 +87,6 @@ def display_character_info(character)
   end
   puts table
 end
-
-#Selects what to do with character
-# def select_character_action(prompt, character)
-#   prompt.select(Rainbow("What does #{character.name} want to do?").teal) do |menu|
-#     menu.enum '.'
-#
-#     menu.choice 'Join Guild', 1
-#     menu.choice 'View Guild', 2
-#     menu.choice 'Leave Guild', 3
-#     menu.choice 'Delete Character', 4
-#   end
-# end
 
 #Selects what to do with character
 def select_character_action(prompt, character)

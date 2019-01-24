@@ -2,11 +2,6 @@ class Character < ActiveRecord::Base
 	belongs_to :guild
 	belongs_to :user
 
-	# def name=(value)
-	#     super(value)
-	#     self.save
-	# end
-
 	def fight(prompt, person)
 		puts "#{self.name} now fighting #{person.name}."
 			choices = [
@@ -36,15 +31,10 @@ class Character < ActiveRecord::Base
 
 	def remove_character
 		puts Rainbow("#{self.name} left the game.").green
-    # self.user.characters.delete(self)
-		self.destroy
-    Guild.check_member_count
-    
-		# puts "#{self.name} left the game."
-    # 	self.user.characters.destroy(self)
-		# # self.destroy
-    # 	Guild.check_member_count
-	end
+    	self.user.characters.delete(self)
+		# self.destroy
+    	Guild.check_member_count
+   	end
 
 	def update_and_notify(old_value, new_value)
 		self.guild_id = new_value.id
@@ -75,7 +65,7 @@ class Character < ActiveRecord::Base
 			else
 				puts Rainbow("You are already a member of this guild.").red
 			end
-		elsif Integer(input)
+		elsif input.to_i == input
 			found = Guild.all.find_by_id(input)
 			if found && self.guild_id != found.id
 				update_and_notify(last_guild, found)
@@ -85,6 +75,9 @@ class Character < ActiveRecord::Base
 			else
 				puts Rainbow("You are already a member of this guild.").red
 			end
+		else
+			puts "Please make a selection."
+			return join_guild
 		end
 		Guild.check_member_count
 		Guild.list_member_count
@@ -105,14 +98,15 @@ class Character < ActiveRecord::Base
 	end
 
 	def leave_guild
-    # binding.pry
-    if self.guild
-		    puts Rainbow("#{self.name} left #{self.guild.name}.").green
-    else
-        return puts Rainbow("#{self.name} is unaffiliated.").red
-    end
+	    if self.guild
+			    puts Rainbow("#{self.name} left #{self.guild.name}.").green
+	    else
+	        return puts Rainbow("#{self.name} is unaffiliated.").red
+	    end
+
 		self.guild_id = nil
 		self.save
+		
 		Guild.check_member_count
 		Guild.list_member_count
 	end
