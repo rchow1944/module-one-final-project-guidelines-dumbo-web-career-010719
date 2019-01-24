@@ -1,15 +1,17 @@
+require 'pry'
 def welcome
 
+system "clear"
 w_color = "#cd3232"
 
 puts "  (`\\ .-') /`   ('-.                                  _   .-')       ('-. "
 puts "   `.( OO ),' _(  OO)                                ( '.( OO )\_   _(  OO)"
-puts ",--./  .--.  (,------.,--.       .-----.  .-'),-----. ,--.   ,--.)(,------."
-puts "|      |  |   |  .---'|  |.-')  '  .--./ ( OO'  .-.  '|   `.'   |  |  .---'"
-puts "|  |   |  |,  |  |    |  | OO ) |  |('-. /   |  | |  ||         |  |  |    "
-puts "|  |.'.|  |_)(|  '--. |  |`-' |/_) |OO  )\\_) |  | |  ||  |'.'|  | (|  '--. "
-puts Rainbow("|         |   |  .--'").color(w_color) + "(" + Rainbow("|  '---." + "'|" + "|  |`-'|   \\ |  | |  ||  |   |  |  |  .--' ").color(w_color)
-puts Rainbow("|   ,'.   |   |  `---.|      |").color(w_color) + "(_" + Rainbow("'  '--'\\    `'  '-'  '|  |   |  |  |  `---.").color(w_color)
+puts Rainbow(",--.").color(w_color) + "/  " + Rainbow(".--.").color(w_color) + "  (" + Rainbow(",------.,--.       .-----.").color(w_color) + "  .-')" + Rainbow(",-----. ,--.   ,--.").color(w_color) + ")(" + Rainbow(",------.").color(w_color)
+puts Rainbow("|      |  |   |  .---'|  |").color(w_color) + ".-')" + Rainbow("  '  .--./").color(w_color) + " ( OO" + Rainbow("'  .-.  '|   `.'   |  |  .---'").color(w_color)
+puts Rainbow("|  |   |  |").color(w_color) + ",  " + Rainbow("|  |    |  |").color(w_color) + "OO )" + Rainbow("  |  |").color(w_color) + "('-. /   " + Rainbow("|  | |  ||         |  |  |    ").color(w_color)
+puts Rainbow("|  |.'.|  |").color(w_color) + "_)(" + Rainbow("|  '--. |  |").color(w_color) + "`-' |/_) " + Rainbow("|").color(w_color) + "OO  )\\_)" + Rainbow(" |  | |  ||  |'.'|  | ").color(w_color) + "(" + Rainbow("|  '--. ").color(w_color)
+puts Rainbow("|         |   |  .--'").color(w_color) + "(" + Rainbow("|  '---.").color(w_color) + "'|" + Rainbow("|  |").color(w_color) + "`-'|   \\ " + Rainbow("|  | |  ||  |   |  |  |  .--' ").color(w_color)
+puts Rainbow("|   ,'.   |   |  `---.|      |").color(w_color) + "(_" + Rainbow("'  '--'\\    ").color(w_color) + "`" + Rainbow("'  '-'  '|  |   |  |  |  `---.").color(w_color)
 puts Rainbow("'--'   '--'   `------'`------'   `-----'      `-----' `--'   `--'  `------'").color(w_color)
 
 end
@@ -64,12 +66,16 @@ end
 #Displays a list of opponents to choose from
 def select_opponent(prompt, character)
   excluded = Character.all.reject {|c| c == character}
+  if excluded.count > 0
     choices = excluded.map {|c|
       {
         name: c.name,
         value: c
       }
     }
+  else
+    return
+  end
   prompt.select(Rainbow("Select an opponent:").teal, choices, cycle: true)
 end
 
@@ -116,20 +122,31 @@ def select_character_action(prompt, character)
  menu = [
    {"Fight Someone" => -> do
       fighter = select_opponent(prompt, character)
+      if fighter.nil?
+        puts "No available fighter."
+        # select_character_action(prompt, character)
+      else
       character.fight(prompt, fighter)
       Character.check_health
+      end
       select_character_action(prompt, character)
       end},
-   {"Join Guild" => -> do character.join_guild end},
+   {"Join Guild" => -> do 
+    character.join_guild
+    select_character_action(prompt, character)
+    end},
    {"View Guild" => -> do
        if character.guild
          character.guild.display_guild
        else
-         puts "#{character.name} is not in a guild!"
+         puts Rainbow("#{character.name} is not in a guild!").red
        end
        select_character_action(prompt, character)
      end},
-   {"Leave Guild" => -> do character.leave_guild end},
+   {"Leave Guild" => -> do 
+    character.leave_guild
+    select_character_action(prompt, character)
+    end},
    {"Delete Character" => -> do character.remove_character end},
    {"Go Back" => -> do return end},
    {"Exit Game" => -> do exit end}
