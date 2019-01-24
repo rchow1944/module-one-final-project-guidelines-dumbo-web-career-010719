@@ -13,11 +13,12 @@ OR
 Clone the repo here:
 git@github.com:rchow1944/module-one-final-project-guidelines-dumbo-web-career-010719.git
 
-Once the copy is on your machine and you are in base directory, run these two commands:
-ruby bin/run.rb
-rake db:migrate
+Once the copy is on your machine and you are in base directory, run these three commands:
+1) bundle install
+2) rake db:migrate
+3) ruby bin/run.rb
 
-Those two commands will start the application followed by creating the database.
+These commands will install required gems, create the database(s), and start the application.
 
 - Notes - 
 These were the user stories we had in mind when making this game:
