@@ -31,7 +31,7 @@ end
 
 #Gets user choice from menu
 def get_user_action(prompt, user)
-  prompt.say("Hi, #{user.name}!")
+  # prompt.say("Hi, #{user.name}!")
   choices = [
     {"Create a Character" => -> do create_character_prompt(prompt, user) end},
     {"Select a Character" => -> do user.characters.count > 0 ? select_user_character(prompt, user) : create_character_prompt(prompt,user) end},
@@ -94,7 +94,7 @@ def select_character_action(prompt, character)
    {"Fight Someone" => -> do
       fighter = select_opponent(prompt, character)
       if fighter.nil?
-        puts "No available fighter."
+        puts Rainbow("No available fighter.").red
         # select_character_action(prompt, character)
       else
       character.fight(prompt, fighter)
@@ -102,7 +102,7 @@ def select_character_action(prompt, character)
       end
       select_character_action(prompt, character)
       end},
-   {"Join Guild" => -> do 
+   {"Join Guild" => -> do
     character.join_guild
     select_character_action(prompt, character)
     end},
@@ -114,7 +114,7 @@ def select_character_action(prompt, character)
        end
        select_character_action(prompt, character)
      end},
-   {"Leave Guild" => -> do 
+   {"Leave Guild" => -> do
     character.leave_guild
     select_character_action(prompt, character)
     end},
@@ -125,9 +125,20 @@ def select_character_action(prompt, character)
  response = prompt.select(Rainbow("What does #{character.name} want to do?").teal, menu)
 end
 
+def user_message(prompt, user)
+  a = Artii::Base.new :font => 'slant'
+  colorizer = Lolize::Colorizer.new
+  message = a.asciify("Hi, #{user.name}!")
+  colorizer.write message
+  # system("lolcat", "#{message}")
+  # exec("puts #{message} | lolcat")
+  puts "\n"
+end
+
 #Runs the program
 def run(user)
   prompt = TTY::Prompt.new
+  user_message(prompt, user)
   while true
     user = User.find(user.id)
     selected_char = get_user_action(prompt, user)
