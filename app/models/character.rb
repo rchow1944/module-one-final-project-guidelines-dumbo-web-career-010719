@@ -31,8 +31,8 @@ class Character < ActiveRecord::Base
 
 	def remove_character
 		puts Rainbow("#{self.name} left the game.").green
-    	self.user.characters.delete(self)
-		# self.destroy
+    	# self.user.characters.delete(self)
+		self.destroy
     	Guild.check_member_count
    	end
 
@@ -65,7 +65,7 @@ class Character < ActiveRecord::Base
 			else
 				puts Rainbow("You are already a member of this guild.").red
 			end
-		elsif input.to_i == input
+		elsif input.to_i > 0
 			found = Guild.all.find_by_id(input)
 			if found && self.guild_id != found.id
 				update_and_notify(last_guild, found)
