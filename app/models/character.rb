@@ -2,9 +2,36 @@ class Character < ActiveRecord::Base
 	belongs_to :guild
 	belongs_to :user
 
-	def name=(value)
-	    super(value)
-	    self.save
+	# def name=(value)
+	#     super(value)
+	#     self.save
+	# end
+
+	def fight(prompt, person)
+		puts "#{self.name} now fighting #{person.name}."
+			choices = [
+				{"Punch" => -> do self.do_dmg(person) end},
+   				{"Go Back" => -> do return end},
+				]
+  			prompt.select(Rainbow("Choose an attack:").teal, choices, cycle: true)
+	end
+
+	def self.check_health
+		Character.all.each do |champ|
+			if champ.hp <= 0
+				placeholder = champ.name
+				champ.remove_character
+				puts "#{placeholder} deleted from champ registry."
+				placeholder = nil
+			end
+		end
+	end
+
+	def do_dmg(victim)
+		original_hp = victim.hp
+		victim.hp -= self.atk
+		victim.save
+		puts "#{victim.name}'s hp dropped from #{original_hp} to #{victim.hp}"
 	end
 
 	def remove_character
@@ -12,6 +39,11 @@ class Character < ActiveRecord::Base
     # self.user.characters.delete(self)
 		self.destroy
     Guild.check_member_count
+    
+		# puts "#{self.name} left the game."
+    # 	self.user.characters.destroy(self)
+		# # self.destroy
+    # 	Guild.check_member_count
 	end
 
 	def update_and_notify(old_value, new_value)
@@ -35,7 +67,7 @@ class Character < ActiveRecord::Base
 		end
 		input = STDIN.gets.strip
 		if input.count("a-zA-Z") > 0	#check if input is a string (includes letters)
-			found = Guild.all.find {|guild| guild.name == input}
+			found = Guild.all.find {|guild| guild.name.downcase == input.downcase}
 			if found && self.guild_id != found.id
 				update_and_notify(last_guild, found)
 			elsif !found
