@@ -1,5 +1,6 @@
 def welcome
 
+system "clear"
 w_color = "#cd3232"
 
 puts "  (`\\ .-') /`   ('-.                                  _   .-')       ('-. "
