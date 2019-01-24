@@ -4,10 +4,10 @@ w_color = "#cd3232"
 
 puts "  (`\\ .-') /`   ('-.                                  _   .-')       ('-. "
 puts "   `.( OO ),' _(  OO)                                ( '.( OO )\_   _(  OO)"
-puts ",--./  .--.  (,------.,--.       .-----.  .-'),-----. ,--.   ,--.)(,------."
-puts "|      |  |   |  .---'|  |.-')  '  .--./ ( OO'  .-.  '|   `.'   |  |  .---'"
-puts "|  |   |  |,  |  |    |  | OO ) |  |('-. /   |  | |  ||         |  |  |    "
-puts Rainbow("|  |.'.|  |").color(w_color) + "_)(|  '--. |  |`-' |/_) |OO  )\\_) |  | |  ||  |'.'|  | (|  '--. "
+puts Rainbow(",--.").color(w_color) + "/  " + Rainbow(".--.").color(w_color) + "  (" + Rainbow(",------.,--.       .-----.").color(w_color) + "  .-')" + Rainbow(",-----. ,--.   ,--.").color(w_color) + ")(" + Rainbow(",------.").color(w_color)
+puts Rainbow("|      |  |   |  .---'|  |").color(w_color) + ".-')" + Rainbow("  '  .--./").color(w_color) + " ( OO" + Rainbow("'  .-.  '|   `.'   |  |  .---'").color(w_color)
+puts Rainbow("|  |   |  |").color(w_color) + ",  " + Rainbow("|  |    |  |").color(w_color) + "OO )" + Rainbow("  |  |").color(w_color) + "('-. /   " + Rainbow("|  | |  ||         |  |  |    ").color(w_color)
+puts Rainbow("|  |.'.|  |").color(w_color) + "_)(" + Rainbow("|  '--. |  |").color(w_color) + "`-' |/_) " + Rainbow("|").color(w_color) + "OO  )\\_)" + Rainbow(" |  | |  ||  |'.'|  | ").color(w_color) + "(" + Rainbow("|  '--. ").color(w_color)
 puts Rainbow("|         |   |  .--'").color(w_color) + "(" + Rainbow("|  '---.").color(w_color) + "'|" + Rainbow("|  |").color(w_color) + "`-'|   \\ " + Rainbow("|  | |  ||  |   |  |  |  .--' ").color(w_color)
 puts Rainbow("|   ,'.   |   |  `---.|      |").color(w_color) + "(_" + Rainbow("'  '--'\\    ").color(w_color) + "`" + Rainbow("'  '-'  '|  |   |  |  |  `---.").color(w_color)
 puts Rainbow("'--'   '--'   `------'`------'   `-----'      `-----' `--'   `--'  `------'").color(w_color)
