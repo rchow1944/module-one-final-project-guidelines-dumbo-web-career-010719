@@ -1,4 +1,4 @@
-- - Description - -
+- Description - 
 Welcome to Fight Club
 In this game played through the Command Line Interface, you can register a User who can then create characters that can create, join, and leave guild associations, as well as fight other characters. 
 
@@ -6,7 +6,7 @@ Your actions have a lasting effect. When you leave or join a guild, that guild w
 
 To play, you must create a User. The characters created by a User will be saved by the game and can only be used by that particular Sser. To select a User, all you have to do is type its name correctly. There is no list of Users displayed, so you'll have to remember the Username you created if you want to use its characters.
 
-- - Installation - -
+- Installation - 
 Download the zip file here:
 https://github.com/rchow1944/module-one-final-project-guidelines-dumbo-web-career-010719/archive/master.zip
 OR
@@ -19,7 +19,7 @@ rake db:migrate
 
 Those two commands will start the application followed by creating the database.
 
-- - Notes - -
+- Notes - 
 These were the user stories we had in mind when making this game:
  : Retrieve characters from database
  : Supply a name to create a character with random stats
@@ -27,7 +27,6 @@ These were the user stories we had in mind when making this game:
  : Can use characters to battle and join guild
 
 
-- - Assignment - -
 # Module One Final Project
 ### Option Two - Command Line CRUD App
 
@@ -35,6 +34,3 @@ These were the user stories we had in mind when making this game:
 2. You should have a minimum of three models.
 3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
 4. Use good OO design patterns. You should have separate models for your runner and CLI interface.
-
-
-
