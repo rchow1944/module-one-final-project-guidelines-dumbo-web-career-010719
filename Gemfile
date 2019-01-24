@@ -10,3 +10,5 @@ gem "require_all"
 gem 'tty-prompt'
 gem 'terminal-table'
 gem 'rainbow'
+gem 'artii'
+gem 'lolize'
