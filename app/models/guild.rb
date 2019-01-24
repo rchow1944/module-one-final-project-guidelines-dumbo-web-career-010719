@@ -12,7 +12,7 @@ class Guild < ActiveRecord::Base
 			character.guild_id = nil
 			character.save
 		end
-		# super
+		self.destroy
 		"#{self.name} guild has been DESTROYED!"
 	end
 
