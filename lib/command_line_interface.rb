@@ -36,7 +36,7 @@ def get_user_action(prompt, user)
   choices = [
     {"Create a Character" => -> do create_character_prompt(prompt, user) end},
     {"Select a Character" => -> do user.characters.count > 0 ? select_user_character(prompt, user) : create_character_prompt(prompt,user) end},
-    {"Exit" => -> do exit end}
+    {"Exit Game" => -> do exit end}
   ]
   prompt.select(Rainbow("What do you want to do?").teal, choices)
 end
@@ -59,6 +59,18 @@ def select_user_character(prompt, user)
     }
   }
   prompt.select(Rainbow("Select a character:").teal, choices, cycle: true)
+end
+
+#Displays a list of opponents to choose from
+def select_opponent(prompt, character)
+  excluded = Character.all.reject {|c| c == character}
+    choices = excluded.map {|c|
+      {
+        name: c.name,
+        value: c
+      }
+    }
+  prompt.select(Rainbow("Select an opponent:").teal, choices, cycle: true)
 end
 
 #Executes user choice
@@ -101,15 +113,13 @@ end
 
 #Selects what to do with character
 def select_character_action(prompt, character)
- # prompt.select(Rainbow(“What do you want to do?“).teal) do |menu|
- #   menu.enum ‘.’
-
- #   menu.choice ‘Join Guild’, 1
- #   menu.choice ‘Leave Guild’, 2
- #   menu.choice ‘Delete Character’, 3
- # end
-
  menu = [
+   {"Fight Someone" => -> do
+      fighter = select_opponent(prompt, character)
+      character.fight(prompt, fighter)
+      Character.check_health
+      select_character_action(prompt, character)
+      end},
    {"Join Guild" => -> do character.join_guild end},
    {"View Guild" => -> do
        if character.guild
@@ -122,7 +132,7 @@ def select_character_action(prompt, character)
    {"Leave Guild" => -> do character.leave_guild end},
    {"Delete Character" => -> do character.remove_character end},
    {"Go Back" => -> do return end},
-   {"Exit" => -> do exit end}
+   {"Exit Game" => -> do exit end}
  ]
  response = prompt.select(Rainbow("What does #{character.name} want to do?").teal, menu)
 end

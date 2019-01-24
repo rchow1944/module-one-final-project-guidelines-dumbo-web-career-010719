@@ -7,6 +7,33 @@ class Character < ActiveRecord::Base
 	#     self.save
 	# end
 
+	def fight(prompt, person)
+		puts "#{self.name} now fighting #{person.name}."
+			choices = [
+				{"Punch" => -> do self.do_dmg(person) end},
+   				{"Go Back" => -> do return end},
+				]
+  			prompt.select(Rainbow("Choose an attack:").teal, choices, cycle: true)
+	end
+
+	def self.check_health
+		Character.all.each do |champ|
+			if champ.hp <= 0
+				placeholder = champ.name
+				champ.remove_character
+				puts "#{placeholder} deleted from champ registry."
+				placeholder = nil
+			end
+		end
+	end
+
+	def do_dmg(victim)
+		original_hp = victim.hp
+		victim.hp -= self.atk
+		victim.save
+		puts "#{victim.name}'s hp dropped from #{original_hp} to #{victim.hp}"
+	end
+
 	def remove_character
 		puts "#{self.name} left the game."
     	self.user.characters.destroy(self)
