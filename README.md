@@ -6,6 +6,8 @@ Your actions have a lasting effect. When you leave or join a guild, that guild w
 
 To play, you must create a User. The characters created by a User will be saved by the game and can only be used by that particular Sser. To select a User, all you have to do is type its name correctly. There is no list of Users displayed, so you'll have to remember the Username you created if you want to use its characters.
 
+To join a guild, you can type in the displayed ID or its name (case-insensitive). If you type a name not on the list, you will create a new guild and automatically join its ranks.
+
 - Installation - 
 Download the zip file here:
 https://github.com/rchow1944/module-one-final-project-guidelines-dumbo-web-career-010719/archive/master.zip
